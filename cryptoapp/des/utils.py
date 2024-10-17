@@ -33,14 +33,15 @@ def des_decrypt(ciphertext, key, iv):
         pass  # Ignore decryption errors and move to the next key
 
 
-def des_brute_force(ciphertext, iv):
+def des_brute_force(ciphertext, iv, charset='abcdefghijklmnopqrstuvwxyz'):
     """
     Attempts to brute force the DES key.
     :param ciphertext: The encrypted message (ciphertext).
     :param iv: The initialization vector used for encryption.
+    :param charset: The character set to use for brute forcing.
     :return: Decrypted message if the key is found, otherwise None.
     """
-    charset = 'abcdefghijklmnopqrstuvwxyz'  # Limiting to lowercase letters
+    # charset = 'abcdefghijklmnopqrstuvwxyz'  # Limiting to lowercase letters
     key_length = 8  # DES keys are always 8 bytes
 
     for key_tuple in itertools.product(charset, repeat=key_length):

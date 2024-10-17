@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if success %}
+    <div class="alert {% if success %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        Success! Here is message:
+        <br>
+        {{ hashed }}
+        <br>
+        Created with algorithm:
+        <br>
+        {{ algorithm }}
+        {% if salt %}
+        With salt:
+        <br>
+        {{ salt }}
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+        {{ result }}
+    </div>
+    {% endif %}
+    <a href="{% url 'home' %}" class="btn btn-primary">Go back to Home</a>
+</div>
+{% endblock %}

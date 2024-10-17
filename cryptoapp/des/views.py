@@ -11,15 +11,20 @@ def des_encrypt_view(request):
 
         # Ensure key length is 8 bytes
         if len(key) != 8:
-            return HttpResponse("Key must be exactly 8 bytes long.")
-
-        ciphertext, iv = des_encrypt(message, key)
-        return HttpResponse(f"Ciphertext: {ciphertext.hex()}<br>IV: {iv.hex()}")
-
+            return render(request, 'des/encrypt.html', {'warning': "Key must be exactly 8 bytes long."})
+        try:
+            ciphertext, iv = des_encrypt(message, key)
+            return render(request, 'des/result.html',
+                      {'result': f"Success! Encrypted message: {ciphertext.hex()}",
+                       'key': f"IV: {iv.hex()}", 'success': True})
+        except Exception as e:
+            return render(request, 'des/result.html',
+                      {'result': f"Encryption failed with provided key: {key.decode('utf-8')}.",
+                       'success': False})
     return render(request, 'des/encrypt.html')
 
 
-def des_crack_view(request):
+def des_decrypt_view(request):
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
 
@@ -30,28 +35,38 @@ def des_crack_view(request):
             iv = bytes.fromhex(form.cleaned_data['iv'])
             key = form.cleaned_data['key'].encode('utf-8') if form.cleaned_data['key'] else None
             dictionary_file = request.FILES.get('dictionary_file')
+            charset = form.cleaned_data['charset'] if form.cleaned_data['charset'] else 'abcdefghijklmnopqrstuvwxyz'
 
             if key:  # If key is provided, attempt to decrypt the message
                 try:
                     decrypted_data = des_decrypt(ciphertext, key, iv)
-                    return HttpResponse(
-                        f"Decrypted message: {decrypted_data.decode('utf-8')}<br>Key: {key.decode('utf-8')}")
+                    return render(request, 'des/result.html',
+                                  {'result': f"Success! Decrypted message: {decrypted_data.decode('utf-8')}",
+                                   'key': f"Provided Key: {key.decode('utf-8')}", 'success': True})
                 except Exception as e:
-                    return HttpResponse(f"Decryption failed with provided key: {key.decode('utf-8')}. Error: {e}")
+                    return render(request, 'des/result.html',
+                                  {'result': f"Decryption failed with provided key: {key.decode('utf-8')}.",
+                                   'success': False})
             elif dictionary_file:  # If a dictionary file is uploaded, use dictionary attack
-                decrypted_data, dictionary_key = des_dictionary_attack(ciphertext, iv, dictionary_file)
-                if decrypted_data:
-                    return HttpResponse(
-                        f"Success! Decrypted message: {decrypted_data.decode('utf-8')}<br>Dictionary Key: {dictionary_key.decode('utf-8')}")
-                else:
-                    return HttpResponse("Dictionary attack failed. No valid key found.")
+                try:
+                    decrypted_data, dictionary_key = des_dictionary_attack(ciphertext, iv, dictionary_file)
+                    if decrypted_data:
+                        return render(request, 'des/result.html',
+                                      {'result': f"Success! Decrypted message: {decrypted_data.decode('utf-8')}",
+                                       'key': f"Dictionary Key: {dictionary_key.decode('utf-8')}", 'success': True})
+                except Exception as e:
+                    return render(request, 'des/result.html',
+                                  {'result': f"Dictionary attack failed. No valid key found.", 'success': False})
             else:  # Attempt to brute force the key
-                decrypted_data, key = des_brute_force(ciphertext, iv)
-                if decrypted_data:
-                    return HttpResponse(
-                        f"Success! Decrypted message: {decrypted_data.decode('utf-8')}<br>Key: {key.decode('utf-8')}")
-                else:
-                    return HttpResponse("Key not found.")
+                try:
+                    decrypted_data, key = des_brute_force(ciphertext, iv, charset)
+                    if decrypted_data:
+                        return render(request, 'des/result.html',
+                                      {'result': f"Success! Decrypted message: {decrypted_data.decode('utf-8')}",
+                                       'key': f"Brute force key: {key.decode('utf-8')}", 'success': True})
+                except Exception as e:
+                    return render(request, 'des/result.html',
+                                  {'result': f"Brute force attack failed. Key not found.", 'success': False})
 
     else:
         form = FileUploadForm()
