@@ -4,11 +4,11 @@
 <div class="container mt-5">
     {% if success %}
     <div class="alert {% if success %}alert-success{% else %}alert-danger{% endif %}" role="alert">
-        Success! Here is message:
+        {{ result }}
         <br>
         {{ hashed }}
         <br>
-        Created with algorithm:
+        Chosen algorithm:
         <br>
         {{ algorithm }}
         {% if salt %}

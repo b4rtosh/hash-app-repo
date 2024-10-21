@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ {% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+{% endif %}
+    <h1>Crack hash with chosen algorithm</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Hash</button>
+    </form>
+{% endblock %}
