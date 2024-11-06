@@ -78,15 +78,14 @@ def crack_hash_view(request):
                 for chunk in wordlist.chunks():
                     wordlist_file.write(chunk)
 
-            # Debug: Log the file paths
-            print(f"Hash File Path: {hash_file_path}")
-            print(f"Wordlist File Path: {wordlist_file_path}")
             result = crackHash.run_hashcat(hash_file_path, wordlist_file_path, hash_algorithm)
 
             os.remove(hash_file_path)
             os.remove(wordlist_file_path)
-
-            return HttpResponse(f"Hashcat output: {result}")
+            if result.status == 'cracked':
+                return render(request, 'hash/crack_result.html',
+                          {'password': result.password, 'algorithm': result.hash_type, 'success': True,
+                           'hash': result.hash})
 
     else:
         form = CrackHash()

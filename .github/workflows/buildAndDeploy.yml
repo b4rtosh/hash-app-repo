@@ -1,0 +1,15 @@
+name: Build and deploy to Azure Kubernetes Service
+
+# for test trigger on
+on:
+  workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name:

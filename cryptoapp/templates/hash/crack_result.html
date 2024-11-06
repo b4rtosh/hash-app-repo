@@ -4,9 +4,23 @@
 <div class="container mt-5">
     {% if success %}
     <div class="alert {% if success %}alert-success{% else %}alert-danger{% endif %}" role="alert">
-        {{ result }}
+        Crack result:
         <br>
-        {{ key }}
+        {{ password }}
+        <br>
+        Hashed password:
+        <br>
+        {{ hash }}
+        <br>
+        Chosen algorithm:
+        <br>
+        {{ algorithm }}
+        <br>
+        {% if salt %}
+        With salt:
+        <br>
+        {{ salt }}
+        {% endif %}
     </div>
     {% else %}
     <div class="alert alert-danger" role="alert">
