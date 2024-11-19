@@ -10,8 +10,8 @@ echo "Database is ready!"
 
 # Run Django database migrations
 echo "Running migrations..."
-python cryptoapp/manage.py makemigrations --no-input
-python cryptoapp/manage.py migrate --no-input
+python manage.py makemigrations --no-input
+python manage.py migrate --no-input
 
 # Start the Django app
 exec "$@"
