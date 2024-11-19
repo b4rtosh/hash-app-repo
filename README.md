@@ -1,4 +1,4 @@
-# crypto-app-repo
+# App for hash purposes
 
 ## tasks:
 1. Add queue for hashcat processes

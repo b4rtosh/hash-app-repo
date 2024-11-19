@@ -2,19 +2,21 @@ import subprocess
 import re
 
 
-def run_hashcat(hash_value, wordlist, hash_algorithm='0'):
+def run_hashcat(hash_value, wordlist, hash_algorithm='0',show=False):
     try:
-        result = subprocess.run(
-            [
-                'hashcat', '-m', hash_algorithm, '-a', '0', hash_value, wordlist
-            ],
-            capture_output=True, text=True
-        )
+        command = [
+            'hashcat', '-m', hash_algorithm, '-a', hash_algorithm, hash_value, wordlist
+        ]
+        if show:
+            command.append('--show')
+        # else:
+        #     command.append('--potfile-disable')
+        result = subprocess.run(command, capture_output=True, text=True)
         stdout = result.stdout
         stderr = result.stderr
 
         # Determine if the password was cracked
-        if "Cracked" in stdout:
+        if "Cracked" in stdout or show:
             # Extract the cracked password from the output
             match = re.search(r"([a-fA-F\d]{32}):(\S+)", stdout)
             if match:
@@ -34,7 +36,10 @@ def run_hashcat(hash_value, wordlist, hash_algorithm='0'):
                 "stdout": stdout,
                 "stderr": stderr
             }
-
+        elif "--show" in stdout:
+            return {
+                "status": "already cracked"
+            }
         # If neither "Cracked" nor "Exhausted" found, return the raw output
         return {
             "status": "unknown",

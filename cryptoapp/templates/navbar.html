@@ -7,16 +7,18 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" href="{% url 'generate_hash' %}">Generate</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'verify_hash' %}">Verify</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Hash
+            Crack
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'generate_hash' %}">Generate</a></li>
-            <li><a class="dropdown-item" href="{% url 'verify_hash' %}">Verify</a></li>
-            <li><a class="dropdown-item" href="{% url 'crack_hash' %}">Crack</a></li>
+            <li><a class="dropdown-item" href="{% url 'crack_hash' %}">Schedule</a></li>
+            <li><a class="dropdown-item" href="{% url 'task_results' %}">Results</a></li>
           </ul>
         </li>
       </ul>

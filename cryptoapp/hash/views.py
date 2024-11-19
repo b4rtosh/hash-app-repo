@@ -1,9 +1,8 @@
-from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import GenerateHash, VerifyHash, CrackHash
-from .utils import utils, crackHash
-import tempfile
-import os
+from .tasks import crack_hash_task
+from .utils import utils
+from .models import CrackHashModel
 
 
 def generate_hash_view(request):
@@ -23,7 +22,8 @@ def generate_hash_view(request):
             try:
                 hashed = utils.generate_hash(plain_text, hash_type, hash_salt)
                 return render(request, "hash/result.html",
-                              {'result': "Success! Here is message:", "hashed": hashed, 'salt': hash_salt, 'algorithm': hash_type, 'success': True})
+                              {'result': "Success! Here is message:", "hashed": hashed, 'salt': hash_salt,
+                               'algorithm': hash_type, 'success': True})
             except Exception as e:
                 return render(request, "hash/result.html",
                               {"result": "An error occurred while hashing the text.", 'success': False})
@@ -47,7 +47,8 @@ def verify_hash_view(request):
                                   {"result": "The hash matches the text.", 'algorithm': hash_type, 'success': True})
                 else:
                     return render(request, "hash/result.html",
-                                  {"result": "The hash does not match the text.", 'algorithm': hash_type, 'success': False})
+                                  {"result": "The hash does not match the text.", 'algorithm': hash_type,
+                                   'success': False})
             except Exception as e:
                 return render(request, "hash/verify.html",
                               {"result": "An error occurred while hashing the text.", 'success': False})
@@ -60,33 +61,24 @@ def crack_hash_view(request):
     if request.method == 'POST':
         form = CrackHash(request.POST, request.FILES)
         if form.is_valid():
-            hash_value = request.FILES['hash_value_file']
+            hash = request.FILES['hash_value_file']
             wordlist = request.FILES['wordlist_file']
             hash_algorithm = form.cleaned_data.get("hash_type")
+            print(hash_algorithm)
+    #       read data from files
+            hash_file_data = hash.read()
+            wordlist_file_data = wordlist.read()
 
-            # create a temporary directory to store the uploaded files
-            temp_dir = tempfile.gettempdir()
-            hash_file_path = os.path.join(temp_dir, hash_value.name)
-            wordlist_file_path = os.path.join(temp_dir, wordlist.name)
+    #       call Celery task
+            task = crack_hash_task.delay(hash_file_data, wordlist_file_data, hash_algorithm)
+            return render(request, 'hash/crack_result.html', {
+                'success': True,
+                'task_id': task.id,
+                'message': 'Task has been queued successfully. Check the task status for updates.'
+            })
 
-            #  write the uploaded files to the temporary directory
-            with open(hash_file_path, 'wb+') as hash_file:
-                for chunk in hash_value.chunks():
-                    hash_file.write(chunk)
+    return render(request, 'hash/crack.html', {'form': CrackHash()})
 
-            with open(wordlist_file_path, 'wb+') as wordlist_file:
-                for chunk in wordlist.chunks():
-                    wordlist_file.write(chunk)
-
-            result = crackHash.run_hashcat(hash_file_path, wordlist_file_path, hash_algorithm)
-
-            os.remove(hash_file_path)
-            os.remove(wordlist_file_path)
-            if result.status == 'cracked':
-                return render(request, 'hash/crack_result.html',
-                          {'password': result.password, 'algorithm': result.hash_type, 'success': True,
-                           'hash': result.hash})
-
-    else:
-        form = CrackHash()
-    return render(request, 'hash/crack.html', {'form': form})
+def task_results_view(request):
+    tasks = CrackHashModel.objects.all().order_by('-created_at')
+    return render(request, 'hash/task_results.html', {'tasks': tasks})

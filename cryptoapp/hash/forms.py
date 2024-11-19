@@ -1,5 +1,3 @@
-from cProfile import label
-
 from django import forms
 
 
@@ -21,8 +19,7 @@ class VerifyHash(forms.Form):
 
 
 class CrackHash(forms.Form):
-    hash_value_file = forms.FileField(label="Select the hash file", required=True,
-                                 help_text="The file should contain the hash value to crack")
+    hash_value_file = forms.FileField(label="Select the hash file", required=True)
     wordlist_file = forms.FileField(label="Select the wordlist file", required=True)
     hash_type = forms.ChoiceField(
         choices=[('0', 'MD5'), ('100', 'SHA1'), ('1400', 'SHA256'), ('sha512', 'SHA512')],

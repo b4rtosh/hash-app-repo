@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Task Results</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Task ID</th>
+                <th>Status</th>
+                <th>Hash Algorithm</th>
+                <th>Cracked Password</th>
+                <th>Error Message</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.task_id }}</td>
+                    <td>{{ task.get_status_display }}</td>
+                    <td>{{ task.hash_algorithm }}</td>
+                    <td>{{ task.cracked_password|default:"N/A" }}</td>
+                    <td>{{ task.error_message|default:"N/A" }}</td>
+                    <td>{{ task.created_at }}</td>
+                    <td>{{ task.updated_at }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7">No tasks found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

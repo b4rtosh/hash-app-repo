@@ -4,6 +4,7 @@
 <div class="container mt-5">
     {% if success %}
     <div class="alert {% if success %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        {{ message }}
         Crack result:
         <br>
         {{ password }}
