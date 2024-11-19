@@ -19,7 +19,6 @@ def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm):
                 'hash_algorithm': hash_algorithm,
                 'status': 'PROCESSING',
             }
-
         )
 
         # Create temporary files
