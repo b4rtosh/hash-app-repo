@@ -2,7 +2,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: cryptoapp/Dockerfile
     ports:
       - 80:8000
     depends_on:
@@ -14,7 +14,7 @@ services:
   celery:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: cryptoapp/Dockerfile
     depends_on:
       - db
       - redis
