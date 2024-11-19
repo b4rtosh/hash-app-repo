@@ -11,7 +11,4 @@ app = Celery('cryptoapp')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Autodiscover tasks from installed apps
-app.autodiscover_tasks(['hash'])
-
-
-import cryptoapp.hash.tasks
+app.autodiscover_tasks()

@@ -14,6 +14,8 @@ COPY . .
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
+WORKDIR /app/cryptoapp
+
 EXPOSE 8000
 ENTRYPOINT ["/app/entrypoint.sh"]
 #

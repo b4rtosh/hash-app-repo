@@ -9,7 +9,7 @@ services:
       - db
     env_file:
       - '.env'
-    command: python cryptoapp/manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
 
   celery:
     build:
@@ -20,7 +20,7 @@ services:
       - redis
     env_file:
       - '.env'
-    command: celery -A celery worker --loglevel=info
+    command: celery -A cryptoapp worker --loglevel=info
     deploy:
       resources:
         reservations:

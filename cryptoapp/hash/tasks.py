@@ -5,7 +5,7 @@ from .utils.crackHash import run_hashcat
 from .models import CrackHashModel
 
 
-@shared_task(name='hash.tasks.crack_hash_task')
+@shared_task
 def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm):
     """
     Task to handle hash cracking using hashcat.
