@@ -1,8 +1,6 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: cryptoapp/Dockerfile
+    build: ./cryptoapp
     ports:
       - 80:8000
     depends_on:
@@ -12,9 +10,7 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
 
   celery:
-    build:
-      context: .
-      dockerfile: cryptoapp/Dockerfile
+    build: ./cryptoapp
     depends_on:
       - db
       - redis
