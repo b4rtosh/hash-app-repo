@@ -65,12 +65,17 @@ def crack_hash_view(request):
             wordlist = request.FILES['wordlist_file']
             hash_algorithm = form.cleaned_data.get("hash_type")
             print(hash_algorithm)
-    #       read data from files
+            #       read data from files
             hash_file_data = hash.read()
             wordlist_file_data = wordlist.read()
 
-    #       call Celery task
+            #       call Celery task
             task = crack_hash_task.delay(hash_file_data, wordlist_file_data, hash_algorithm)
+            if task.status == 'FAILED':
+                return render(request, 'hash/crack_result.html', {
+                    'success': False,
+                    'error': task.error_message,
+                })
             return render(request, 'hash/crack_result.html', {
                 'success': True,
                 'task_id': task.id,
@@ -78,6 +83,7 @@ def crack_hash_view(request):
             })
 
     return render(request, 'hash/crack.html', {'form': CrackHash()})
+
 
 def task_results_view(request):
     tasks = CrackHashModel.objects.all().order_by('-created_at')

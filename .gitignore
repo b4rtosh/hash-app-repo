@@ -1,0 +1,8 @@
+/.env
+/terraform
+__pycache__
+*.log
+db.sqlite3
+*.pyc
+.venv
+.idea

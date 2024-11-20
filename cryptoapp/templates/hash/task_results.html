@@ -15,6 +15,7 @@
                 <th>Updated At</th>
             </tr>
         </thead>
+        {% if tasks %}
         <tbody>
             {% for task in tasks %}
                 <tr>
@@ -32,6 +33,9 @@
                 </tr>
             {% endfor %}
         </tbody>
+        {% endif %}
     </table>
+    <a href="{% url 'home' %}" class="btn btn-primary">Go back to Home</a>
+    <a href="{% url 'task_resutls' %}" class="btn btn-primary">Go to Results</a>
 </div>
 {% endblock %}
