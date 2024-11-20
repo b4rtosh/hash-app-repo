@@ -6,7 +6,7 @@ from .models import CrackHashModel
 
 
 @shared_task
-def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm):
+def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm, hash_salt=""):
     """
     Task to handle hash cracking using hashcat.
     """
@@ -20,7 +20,6 @@ def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm):
                 'status': 'PROCESSING',
             }
         )
-
         # Create temporary files
         with tempfile.TemporaryDirectory() as tempdir:
             hash_file_path = os.path.join(tempdir, 'hash.txt')
@@ -33,8 +32,16 @@ def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm):
             with open(wordlist_file_path, 'wb') as wordlist_file:
                 wordlist_file.write(wordlist_file_data)
 
+            if hash_salt:
+                modified_wordlist_path = os.path.join(tempdir, 'modified_wordlist.txt')
+                with open(wordlist_file_path, 'r') as wordlist_file, open(modified_wordlist_path,
+                                                                          'w') as modified_wordlist:
+                    for line in wordlist_file:
+                        line = line.strip()  # Remove any extra whitespace
+                        modified_wordlist.write(f"{line}:{hash_salt}\n")  # Append salt to each word
+
             # Run hashcat to crack the hash
-            result = run_hashcat(hash_file_path, wordlist_file_path, hash_algorithm)
+            result = run_hashcat(hash_file_path,  modified_wordlist_path if hash_salt else wordlist_file_path, hash_algorithm)
 
             # If already cracked, show the password
             if result['status'] == 'already cracked':

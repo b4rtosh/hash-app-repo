@@ -5,7 +5,6 @@
     {% if success %}
     <div class="alert {% if success %}alert-success{% else %}alert-danger{% endif %}" role="alert">
         {{ message }}
-        {% endif %}
     </div>
     {% else %}
     <div class="alert alert-danger" role="alert">
@@ -13,6 +12,6 @@
     </div>
     {% endif %}
     <a href="{% url 'home' %}" class="btn btn-primary">Go back to Home</a>
-    <a href="{% url 'task_resutls' %}" class="btn btn-primary">Go to Results</a>
+    <a href="{% url 'task_results' %}" class="btn btn-primary">Go to Results</a>
 </div>
 {% endblock %}

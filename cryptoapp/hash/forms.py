@@ -22,5 +22,6 @@ class CrackHash(forms.Form):
     hash_value_file = forms.FileField(label="Select the hash file", required=True)
     wordlist_file = forms.FileField(label="Select the wordlist file", required=True)
     hash_type = forms.ChoiceField(
-        choices=[('0', 'MD5'), ('100', 'SHA1'), ('1400', 'SHA256'), ('sha512', 'SHA512')],
+        choices=[('0', 'MD5'), ('100', 'SHA1'), ('1400', 'SHA256'), ('1700', 'SHA512')],
         label="Select the hash type")
+    salt = forms.CharField(label="Salt", required=False)

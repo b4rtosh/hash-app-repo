@@ -21,7 +21,7 @@
                 <tr>
                     <td>{{ task.task_id }}</td>
                     <td>{{ task.get_status_display }}</td>
-                    <td>{{ task.hash_algorithm }}</td>
+                    <td>{{ task.get_hash_algorithm_display }}</td>
                     <td>{{ task.cracked_password|default:"N/A" }}</td>
                     <td>{{ task.error_message|default:"N/A" }}</td>
                     <td>{{ task.created_at }}</td>
@@ -36,6 +36,6 @@
         {% endif %}
     </table>
     <a href="{% url 'home' %}" class="btn btn-primary">Go back to Home</a>
-    <a href="{% url 'task_resutls' %}" class="btn btn-primary">Go to Results</a>
+    <a href="{% url 'task_results' %}" class="btn btn-primary">Refresh</a>
 </div>
 {% endblock %}

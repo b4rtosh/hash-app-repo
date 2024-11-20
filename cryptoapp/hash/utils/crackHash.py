@@ -2,15 +2,13 @@ import subprocess
 import re
 
 
-def run_hashcat(hash_value, wordlist, hash_algorithm='0',show=False):
+def run_hashcat(hash_value, wordlist, hash_algorithm='0', show=False):
     try:
         command = [
-            'hashcat', '-m', hash_algorithm, '-a', hash_algorithm, hash_value, wordlist
+            'hashcat', '-m', hash_algorithm, '-a', '0', hash_value, wordlist
         ]
         if show:
             command.append('--show')
-        # else:
-        #     command.append('--potfile-disable')
         result = subprocess.run(command, capture_output=True, text=True)
         stdout = result.stdout
         stderr = result.stderr
