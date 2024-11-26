@@ -1,7 +1,7 @@
 import os
 import tempfile
 from celery import shared_task
-from .utils.crackHash import run_hashcat
+from .utils.crackHash import run_dictionary
 from .models import CrackHashModel
 
 
@@ -41,11 +41,8 @@ def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm, hash_sal
                         modified_wordlist.write(f"{line}:{hash_salt}\n")  # Append salt to each word
 
             # Run hashcat to crack the hash
-            result = run_hashcat(hash_file_path,  modified_wordlist_path if hash_salt else wordlist_file_path, hash_algorithm)
+            result = run_dictionary(hash_file_path, modified_wordlist_path if hash_salt else wordlist_file_path, hash_algorithm)
 
-            # If already cracked, show the password
-            if result['status'] == 'already cracked':
-                result = run_hashcat(hash_file_path, wordlist_file_path, hash_algorithm, show=True)
             # Update task status and result in the database
             if result['status'] == 'cracked':
                 task_record.status = 'SUCCESS'

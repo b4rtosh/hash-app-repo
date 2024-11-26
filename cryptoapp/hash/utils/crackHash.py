@@ -2,16 +2,21 @@ import subprocess
 import re
 
 
-def run_hashcat(hash_value, wordlist, hash_algorithm='0', show=False):
+def run_dictionary(hash_value, wordlist, hash_algorithm='0'):
     try:
         command = [
             'hashcat', '-m', hash_algorithm, '-a', '0', hash_value, wordlist
         ]
-        if show:
-            command.append('--show')
         result = subprocess.run(command, capture_output=True, text=True)
         stdout = result.stdout
         stderr = result.stderr
+        show = False
+        if "--show" in stdout:
+            show = True
+            command.append("--show")
+            result = subprocess.run(command, capture_output=True, text=True)
+            stdout = result.stdout
+            stderr = result.stderr
 
         # Determine if the password was cracked
         if "Cracked" in stdout or show:
@@ -34,10 +39,6 @@ def run_hashcat(hash_value, wordlist, hash_algorithm='0', show=False):
                 "stdout": stdout,
                 "stderr": stderr
             }
-        elif "--show" in stdout:
-            return {
-                "status": "already cracked"
-            }
         # If neither "Cracked" nor "Exhausted" found, return the raw output
         return {
             "status": "unknown",
@@ -47,3 +48,7 @@ def run_hashcat(hash_value, wordlist, hash_algorithm='0', show=False):
 
     except Exception as e:
         return str(e)
+
+
+# def run_brute(hash_value, hash_algorithm='0', show=False):
+

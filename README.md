@@ -1,6 +1,18 @@
-# App for hash purposes
+# App designed to centralize hash functions.
+## The main goal is to provide a simple and easy way to generate, verify and crack hashes through a user-friendly interface.
 
-## tasks:
-1. Add queue for hashcat processes
-2. Add progress bar
-3. Add finding algorithm
+### Table of contents:
+- [Features](#features)
+- [Installation](#installation)
+- [Generate hashes](#generate-hashes)
+- [Verify hashes](#verify-hashes)
+- [Crack hashes](#crack-hashes)
+
+### Features:
+- Generate hashes from a given string with the following algorithms:
+  - MD5
+  - SHA1
+  - SHA256
+  - SHA512
+- Verify if a given hash matches a given string with above algorithms.
+- Crack hashes using dictionary attack
