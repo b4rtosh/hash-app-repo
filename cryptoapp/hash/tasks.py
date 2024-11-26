@@ -1,9 +1,11 @@
 import os
 import tempfile
+import time
 from celery import shared_task
 from .utils.crackHash import run_dictionary
 from .models import CrackHashModel
 
+LOCK_FILE = '/tmp/hashcat.lock'
 
 @shared_task
 def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm, hash_salt=""):
@@ -20,6 +22,15 @@ def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm, hash_sal
                 'status': 'PROCESSING',
             }
         )
+
+        # Wait for the lock to be released
+        while os.path.exists(LOCK_FILE):
+            time.sleep(1)
+
+        # Create the lock file
+        with open(LOCK_FILE, 'w') as lock_file:
+            lock_file.write(str(os.getpid()))
+
         # Create temporary files
         with tempfile.TemporaryDirectory() as tempdir:
             hash_file_path = os.path.join(tempdir, 'hash.txt')
@@ -60,3 +71,8 @@ def crack_hash_task(hash_file_data, wordlist_file_data, hash_algorithm, hash_sal
             error_message=str(e)
         )
         raise
+
+    finally:
+        # Remove the lock file
+        if os.path.exists(LOCK_FILE):
+            os.remove(LOCK_FILE)

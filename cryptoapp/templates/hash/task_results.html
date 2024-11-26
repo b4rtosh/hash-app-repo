@@ -6,6 +6,7 @@
     <table>
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Task ID</th>
                 <th>Status</th>
                 <th>Hash Algorithm</th>
@@ -19,6 +20,7 @@
         <tbody>
             {% for task in tasks %}
                 <tr>
+                    <td>{{ task.id }}</td>
                     <td>{{ task.task_id }}</td>
                     <td>{{ task.get_status_display }}</td>
                     <td>{{ task.get_hash_algorithm_display }}</td>
