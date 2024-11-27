@@ -17,7 +17,8 @@ def generate_hash_view(request):
                 return render(request, "hash/generate.html",
                               {'form': form, "error": "Please provide either a salt or generate one."})
             if hash_salt_generate:
-                hash_salt = "salt"
+                # Generate a random salt
+                hash_salt = utils.generate_salt()
 
             try:
                 hashed = utils.generate_hash(plain_text, hash_type, hash_salt)

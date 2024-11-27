@@ -9,7 +9,7 @@ class CrackHashModel(models.Model):
         ('FAILED', 'Failed'),
     ]
     HASH_CHOICES = [
-        ('0', 'MD5'), ('100', '100'), ('1400', 'SHA256'), ('1700', 'SHA512')
+        ('0', 'MD5'), ('100', 'SHA1'), ('1400', 'SHA256'), ('1700', 'SHA512')
     ]
     task_id = models.CharField(max_length=255, unique=True)
     hash_value = models.CharField(max_length=100)
