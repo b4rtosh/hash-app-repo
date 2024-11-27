@@ -1,6 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Welcome to CryptoApp</h1>
-    <p>Here you can find the latest information about cryptocurrencies.</p>
+    <h1>Welcome</h1>
+    <h2>The main goal is to provide a simple and easy way to generate, verify and crack hashes through a user-friendly interface.</h2>
+    <h3>Features</h3>
+    <ul>
+        <li>Generate hashes from a given string with the following algorithms:
+        <ul>
+            <li>MD5</li>
+            <li>SHA1</li>
+            <li>SHA256</li>
+            <li>SHA512</li>
+        </ul>
+        </li>
+        <li>Verify if a given hash matches a given string</li>
+        <li>Crack hashes using a dictionary attack</li>
+    </ul>
+    <h3>Technologies</h3>
+    <ul>
+        <li>Frontend
+        <ul>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+            <li>Bootstrap</li>
+        </ul>
+        </li>
+        <li>Backend
+        <ul>
+            <li>Django</li>
+            <li>PostgreSQL</li>
+            <li>Celery</li>
+            <li>Redis</li>
+        </ul>
+        </li>
+        <li>Deployment
+        <ul>
+            <li>Docker</li>
+            <li>Docker Compose</li>
+        </ul>
+        </li>
+    </ul>
+
 {% endblock %}

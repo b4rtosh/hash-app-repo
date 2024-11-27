@@ -3,6 +3,7 @@
 
 ### Table of contents:
 - [Features](#features)
+- [Technologies](#technologies)
 - [Installation](#installation)
 - [Generate hashes](#generate-hashes)
 - [Verify hashes](#verify-hashes)
@@ -17,6 +18,20 @@
 - Verify if a given hash matches a given string with above algorithms.
 - Crack hashes using dictionary attack.
 
+### Technologies:
+- Frontend:
+  - HTML
+  - CSS
+  - JavaScript
+  - Bootstrap
+- Backend:
+  - Django
+  - PostgreSQL
+  - Celery - for task scheduling
+  - Redis - as a message broker
+- Deployment:
+  - Docker
+  - Docker Compose
 ### Installation:
 1. Clone the repository:
 ```bash
