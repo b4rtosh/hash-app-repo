@@ -43,7 +43,7 @@ After accessing the application, you will be able to generate hashes
 by clicking on the "Generate" tab in the navbar. 
 Then, you can select the algorithm you want to use, the string you want to hash and optionally
 add specific or generate salt.
-The form will look like this:
+The form will look like this:<br>
 ![Generate hashes form](images/generate.png)<br>
 The result will be displayed automatically after clicking the "Hash" button in the result endpoint.
 
@@ -51,16 +51,16 @@ The result will be displayed automatically after clicking the "Hash" button in t
 To verify a hash, you need to click on the "Verify" tab in the navbar.
 Then, you can select the algorithm you want to use, the string you want to verify and the hash you want to compare. 
 Also, you can add a specific salt.
-The form will look like this:
+The form will look like this:<br>
 ![Verify hashes form](images/verify.png)<br>
 The result will be displayed automatically after clicking the "Verify" button in the result endpoint.
 
 ### Crack hashes:
 To crack a hash, you need to click on the "Crack" and then "Schedule" tab in the navbar.
 Then, you can select the algorithm you want to use, the file with hash you want to crack and the dictionary file you want to use.
-The form will look like this:
+The form will look like this:<br>
 ![Crack hashes form](images/crack.png)<br>
 As the result you will get the information about success or failure of the task scheduling. You can
 get to results template by clicking the "Go to Results" button or "Crack" and "Results" tab in the navbar.
-The results are displayed in a table with the following columns:
+The results are displayed in a table with the following columns:<br>
 ![Crack hashes results](images/results.png)<br>
